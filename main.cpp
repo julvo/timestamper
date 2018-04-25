@@ -2,6 +2,7 @@
 #include<string>
 #include<cstring>
 #include<ctime>
+#include<chrono>
 
 using namespace std;
 
@@ -25,6 +26,8 @@ int main(int argc, char** argv) {
     time_t t;
     bool use_colors;
 
+    chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
+
     parse_args(argc, argv, &use_colors);
 
     getline(cin, line);
@@ -44,8 +47,11 @@ int main(int argc, char** argv) {
     time(&t);
     strftime(time_str, LEN_TIME_FMT, TIME_FMT, localtime(&t));
 
+    chrono::high_resolution_clock::time_point end = chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed = chrono::duration_cast< chrono::duration<double> >(end - start);
+
     if (use_colors) cout << GREY_START;
-    cout << time_str << "Finished";
+    cout << time_str << "Finished in " << elapsed.count() << "s";
     if (use_colors) cout << GREY_STOP;
     cout << endl;
 }
